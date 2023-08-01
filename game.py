@@ -1,7 +1,7 @@
 import pygame
 import random
 
-# List of situations
+# Список ситуаций
 situations = [
     'Когда у тебя есть 5 минут до конца работы',
     'Когда кто-то берет последнюю печеньку',
@@ -10,26 +10,48 @@ situations = [
     'Когда видишь своих друзей после долгого отсутствия'
 ]
 
-# Function to generate a random situation
+# Список картинок
+memes = [
+    'images/meme1.jpg',
+    'images/meme2.jpg',
+    'images/meme3.jpg',
+    'images/meme4.jpg',
+    'images/meme5.jpg',
+    'images/meme6.jpg',
+    'images/meme7.jpg',
+    'images/meme8.jpg',
+    'images/meme9.jpg',
+    'images/meme10.jpg'
+]
+
+# Функция для генерации случайной ситуации
 def generate_situation():
     random_index = random.randint(0, len(situations) - 1)
     return situations[random_index]
 
-# Function to display the game interface
+# Функция для генерации случайных картинок
+def generate_memes(count):
+    random_memes = random.sample(memes, count)
+    return random_memes
+
+# Функция для отображения игрового интерфейса
 def game_interface(screen):
-    # Clear the screen
+    # Очистка экрана
     screen.fill((255, 255, 255))
 
-    # Generate a random situation
+    # Генерация случайной ситуации
     situation = generate_situation()
 
-    # Draw the text window
+    # Отображение текстового окна
     font = pygame.font.Font(None, 24)
     text = font.render(situation, True, (0, 0, 0))
     text_rect = text.get_rect(center=(400, 200))
     screen.blit(text, text_rect)
 
-    # Draw the playing cards
+    # Генерация случайных картинок
+    memes = generate_memes(4)
+
+    # Отображение игральных карт
     card_width = 100
     card_height = 150
     card_spacing = 50
@@ -37,7 +59,9 @@ def game_interface(screen):
     card_y = 400
     for i in range(4):
         card_rect = pygame.Rect(card_x + i * (card_width + card_spacing), card_y, card_width, card_height)
-        pygame.draw.rect(screen, (0, 0, 255), card_rect)
+        meme_image = pygame.image.load(memes[i])
+        meme_image = pygame.transform.scale(meme_image, (card_width, card_height))
+        screen.blit(meme_image, card_rect)
 
-    # Update the display
+    # Обновление экрана
     pygame.display.flip()
