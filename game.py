@@ -25,9 +25,13 @@ memes = [
 ]
 
 # Функция для генерации случайной ситуации
-def generate_situation():
-    random_index = random.randint(0, len(situations) - 1)
-    return situations[random_index]
+def generate_situation(used_situations):
+    available_situations = list(set(situations) - set(used_situations))
+    if not available_situations:
+        available_situations = situations
+    situation = random.choice(available_situations)
+    used_situations.append(situation)
+    return situation, used_situations
 
 # Функция для генерации случайных картинок
 def generate_memes(count):
@@ -40,7 +44,7 @@ def game_interface(screen):
     screen.fill((255, 255, 255))
 
     # Генерация случайной ситуации и картинок
-    situation = generate_situation()
+    situation, used_situations = generate_situation(game_interface.used_situations)
     memes = generate_memes(4)
 
     # Отображение текстового окна
@@ -102,7 +106,7 @@ def game_interface(screen):
                         screen.fill((255, 255, 255))
 
                         # Генерация новой ситуации и картинок
-                        situation = generate_situation()
+                        situation, used_situations = generate_situation(used_situations)
                         memes = generate_memes(4)
 
                         # Отображение новой ситуации и картинок
@@ -118,3 +122,6 @@ def game_interface(screen):
 
     # Quit the game
     pygame.quit()
+
+# Использованные ситуации
+game_interface.used_situations = []
